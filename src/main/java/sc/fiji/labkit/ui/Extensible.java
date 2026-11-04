@@ -47,5 +47,18 @@ public interface Extensible {
 	<T> void addMenuItem(MenuKey<T> key, String title, float priority,
 		Consumer<T> action, Icon icon, String keyStroke);
 
+	/**
+	 * Adds a button to the toolbar above the image, after the built-in tools.
+	 * <p>
+	 * A default method, so that implementations outside Labkit keep compiling.
+	 * Only {@link DefaultExtensible} has a toolbar to add to.
+	 *
+	 * @throws UnsupportedOperationException if this {@link Extensible} has no
+	 *           toolbar
+	 */
+	default void addToolBarButton(String toolTip, Icon icon, Runnable action) {
+		throw new UnsupportedOperationException("No toolbar to add to");
+	}
+
 	JFrame dialogParent();
 }

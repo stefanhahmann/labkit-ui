@@ -43,6 +43,9 @@ import sc.fiji.labkit.ui.plugin.MeasureConnectedComponents;
 import sc.fiji.labkit.ui.segmentation.PredictionLayer;
 import sc.fiji.labkit.ui.segmentation.TrainClassifier;
 import net.miginfocom.swing.MigLayout;
+import org.scijava.Context;
+import org.scijava.log.LogService;
+import org.scijava.plugin.PluginService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,7 +104,29 @@ public class SegmentationComponent extends JPanel implements AutoCloseable {
 			labelingModel));
 		MeasureConnectedComponents.addAction(extensible, labelingModel);
 		new ShowHelpAction(extensible);
+		initExtensions(labelingModel);
 		labelingComponent.addShortcuts(extensible.getShortCuts());
+		labelingComponent.addToolBarButtons(extensible.getToolBarButtons());
+	}
+
+	/**
+	 * Lets every {@link LabkitExtension} add its items. A failing extension is
+	 * logged, so that it cannot keep the Labkit window from opening.
+	 */
+	private void initExtensions(ImageLabelingModel labelingModel) {
+		Context context = segmentationModel.context();
+		for (LabkitExtension extension : context.service(PluginService.class)
+			.createInstancesOfType(LabkitExtension.class))
+		{
+			try {
+				extension.extend(extensible, labelingModel, labelingComponent
+					.getBdvHandle());
+			}
+			catch (RuntimeException e) {
+				context.service(LogService.class).error("Labkit extension " +
+					extension.getClass().getName() + " failed", e);
+			}
+		}
 	}
 
 	private JPanel initLeftPanel() {

@@ -38,6 +38,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -50,6 +51,7 @@ public class DefaultExtensible implements Extensible {
 	private final Context context;
 	private final JFrame dialogBoxOwner;
 	private final MenuFactory menus = new MenuFactory();
+	private final List<JButton> toolBarButtons = new ArrayList<>();
 
 	public DefaultExtensible(Context context, JFrame dialogBoxOwner) {
 		this.context = context;
@@ -69,6 +71,15 @@ public class DefaultExtensible implements Extensible {
 	}
 
 	@Override
+	public void addToolBarButton(String toolTip, Icon icon, Runnable action) {
+		JButton button = new JButton(icon);
+		button.setToolTipText(toolTip);
+		button.setFocusable(false);
+		button.addActionListener(ignore -> action.run());
+		toolBarButtons.add(button);
+	}
+
+	@Override
 	public JFrame dialogParent() {
 		return dialogBoxOwner;
 	}
@@ -83,5 +94,9 @@ public class DefaultExtensible implements Extensible {
 
 	public List<AbstractNamedAction> getShortCuts() {
 		return menus.shortCutActions();
+	}
+
+	public List<JButton> getToolBarButtons() {
+		return toolBarButtons;
 	}
 }

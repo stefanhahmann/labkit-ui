@@ -107,6 +107,11 @@ public class LabelToolsPanel extends JPanel {
 		add(initPlanarModeButton(), "growy");
 	}
 
+	/** Adds a button after the built-in tools. */
+	public void addButton(JComponent button) {
+		add(button, "newline, growy");
+	}
+
 	private void setMode(Mode mode) {
 		this.mode.setActive(false);
 		this.mode = mode;
