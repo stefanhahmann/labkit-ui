@@ -141,6 +141,10 @@ public class BasicLabelingComponent extends JPanel implements AutoCloseable {
 		buttons.forEach(toolsPanel::addButton);
 	}
 
+	public BdvHandle getBdvHandle() {
+		return bdvHandle;
+	}
+
 	@Override
 	public void close() {
 		bdvHandle.close();
