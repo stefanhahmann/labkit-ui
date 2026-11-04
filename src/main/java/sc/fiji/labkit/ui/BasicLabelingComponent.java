@@ -68,6 +68,8 @@ public class BasicLabelingComponent extends JPanel implements AutoCloseable {
 
 	private JSlider zSlider;
 
+	private LabelToolsPanel toolsPanel;
+
 	public BasicLabelingComponent(final JFrame dialogBoxOwner,
 		final ImageLabelingModel model)
 	{
@@ -123,7 +125,7 @@ public class BasicLabelingComponent extends JPanel implements AutoCloseable {
 			bdvHandle, model, actionsAndBehaviours);
 		final SelectLabelController selectLabelController =
 			new SelectLabelController(bdvHandle, model, actionsAndBehaviours);
-		final JPanel toolsPanel = new LabelToolsPanel(brushController,
+		toolsPanel = new LabelToolsPanel(brushController,
 			floodFillController, selectLabelController, planarModeController);
 		actionsAndBehaviours.addAction(new ChangeLabel(model));
 		return toolsPanel;
@@ -133,6 +135,10 @@ public class BasicLabelingComponent extends JPanel implements AutoCloseable {
 		Collection<? extends AbstractNamedAction> shortcuts)
 	{
 		shortcuts.forEach(actionsAndBehaviours::addAction);
+	}
+
+	public void addToolBarButtons(Collection<? extends JComponent> buttons) {
+		buttons.forEach(toolsPanel::addButton);
 	}
 
 	@Override

@@ -102,6 +102,7 @@ public class SegmentationComponent extends JPanel implements AutoCloseable {
 		MeasureConnectedComponents.addAction(extensible, labelingModel);
 		new ShowHelpAction(extensible);
 		labelingComponent.addShortcuts(extensible.getShortCuts());
+		labelingComponent.addToolBarButtons(extensible.getToolBarButtons());
 	}
 
 	private JPanel initLeftPanel() {
